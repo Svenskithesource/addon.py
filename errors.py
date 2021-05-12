@@ -1,0 +1,2 @@
+class NoJsonResponse(Exception):
+    pass
