@@ -10,6 +10,15 @@ class UserNotFound(Exception):
 class PointFormatWrong(Exception):
     pass
 
+class InvalidVoucherFormat(Exception):
+    pass
+
+class VoucherAlreadyRedeemed(Exception):
+    pass
+
+class NotEnoughPoints(Exception):
+    pass
+
 class UserBanned(Exception):
     pass
 
