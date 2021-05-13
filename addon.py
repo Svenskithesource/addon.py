@@ -7,9 +7,10 @@ class API:
         self.api_url = api_url
         self.key = key
 
-    def get_user_info(self, user):
-        self.data["action"] = "get_user_info"
-        req = requests.post(self.api_url, data=self.data)
+    def get_user(self, user):
+        data = self.data
+        data["action"] = "get_user_info"
+        req = requests.post(self.api_url, data=data)
         try:
             req = req.json()
             if "error" in req:
@@ -32,6 +33,26 @@ class User:
         self.points = rjson["points"]
         self.register_date = None if rjson["register_date"].startswith("0") else dateutil.parser.parse(rjson["register_date"])
         self.premium_plan = None if rjson["points"] == "none" or not rjson["points"] else rjson["points"]
+
+    def send_points(self, points=50, description=""):
+        if self.status == "banned":
+            raise errors.UserBanned("User is banned.")
+        if not points or points % 50 or points > 100000 or points < 50:
+            raise errors.PointFormatWrong("The points need to be a multiple of 50 and between 50-100k")
+        data = self.data
+        data["action"] = "send_points"
+        data["to_user_id"] = str(self.user_id)
+        data["description"] = description
+        req = requests.post(self.api_url, data=self.data)
+        try:
+            req = req.json()
+            if "error" in req:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+            else:
+                return True
+
+        except json.decoder.JSONDecodeError:
+            raise errors.NoJsonResponse("Your API key is invalid or you didn't bind your ip correctly. Or addon is being ddossed")
 
 
 

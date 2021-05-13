@@ -7,5 +7,11 @@ class EmptyUserSearch(Exception):
 class UserNotFound(Exception):
     pass
 
+class PointFormatWrong(Exception):
+    pass
+
+class UserBanned(Exception):
+    pass
+
 class UnknownError(Exception):
     pass
