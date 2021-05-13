@@ -19,6 +19,9 @@ class VoucherAlreadyRedeemed(Exception):
 class NotEnoughPoints(Exception):
     pass
 
+class GiftboxOnCooldown(Exception):
+    pass
+
 class UserBanned(Exception):
     pass
 

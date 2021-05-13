@@ -14,10 +14,11 @@ class API:
         except json.decoder.JSONDecodeError:
             raise errors.NoJsonResponse("Your API key is invalid or you didn't bind your ip correctly. Or addon is being ddossed.")
 
+
     def get_user(self, user):
         data = self.data
         data["action"] = "get_user_info"
-        req = requests.post(self.api_url, data=data)
+        req = requests.post(self.api_url, data=data, headers=self.headers)
         req = self.__handle_req__(req)
         if "error" in req:
             if req["error"] == "get_user_info.isEmpty":
@@ -34,7 +35,7 @@ class API:
         data = self.data
         data["action"] = "redeem_voucher"
         data["value"] = voucher
-        req = requests.post(self.api_url, data=data)
+        req = requests.post(self.api_url, data=data, headers=self.headers)
         req = self.__handle_req__(req)
         if "error" in req:
             if req["error"] == "redeem_voucher.invalidFormat":
@@ -53,18 +54,60 @@ class API:
         data = self.data
         data["action"] = "create_voucher"
         data["value"] = str(points)
-        req = requests.post(self.api_url, data=data)
+        req = requests.post(self.api_url, data=data, headers=self.headers)
         if req.text == "null":
-            raise errors.NotEnoughPoints(f"You don't have {points} points")
+            raise errors.NotEnoughPoints(f"You don't have {points} points.")
         req = self.__handle_req__(req)
         if "error" in req:
             if req["error"] == "create_voucher.notEnoughPoints":
-                raise errors.NotEnoughPoints(f"You don't have {points} points")
+                raise errors.NotEnoughPoints(f"You don't have {points} points.")
             else:
                 raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
         else:
             return req["voucher"]
+
+
+    def gift_box(self):
+        data = self.data
+        data["action"] = "gift_box"
+        data.remove("value")
+        req = requests.post(self.api_url, data=data, headers=self.headers)
+        req = self.__handle_req__(req)
+        if "error" in req:
+            if req["error"] == "gift_box.12HourCooldown":
+                raise errors.GiftboxOnCooldown("Giftbox is on a 12h cooldown.")
+            else:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return req["msg"].split(" ")[-2]
+
+
+    def get_transactions(self, receive_transactions_only=False, send_transactions_only=False):
+        kind = 1 if receive_transactions_only and not send_transactions_only else 2 if send_transactions_only and not receive_transactions_only else 0
+        data = self.data
+        data["action"] = "get_transactions"
+        data["value"] = str(kind)
+        req = requests.post(self.api_url, data=data, headers=self.headers)
+        req = self.__handle_req__(req)
+        if "transactions" not in req:
+            raise errors.UnknownError("API responded with an unexpected response: " + req)
+        else:
+            return [Transaction(transaction, self) for transaction in req["transactions"]]
+
         
+
+class Transaction:
+    def __init__(self, transaction, api):
+        self.__api__ = api
+        self.sender_id = transaction["from_user_id"]
+        self.points = transaction["points"]
+        self.description = transaction["description"]
+
+
+    def sender(self):
+        return self.api.get_user(sender_id)
+
+
 
 class User:
     def __init__(self, rjson, api:API):
@@ -78,6 +121,7 @@ class User:
         self.register_date = None if rjson["register_date"].startswith("0") else dateutil.parser.parse(rjson["register_date"])
         self.premium_plan = None if rjson["points"] == "none" or not rjson["points"] else rjson["points"]
 
+
     def send_points(self, points=50, description=""):
         if self.status == "banned":
             raise errors.UserBanned("User is banned.")
@@ -88,12 +132,12 @@ class User:
         data["value"] = str(points)
         data["to_user_id"] = str(self.user_id)
         data["description"] = description
-        req = requests.post(self.api_url, data=self.data)
+        req = requests.post(self.api_url, data=data, headers=self.headers)
         try:
             req = req.json()
             if "error" in req:
                 if req["error"] == "send_points.notEnoughPoints":
-                    raise errors.NotEnoughPoints(f"You don't have {points} points")
+                    raise errors.NotEnoughPoints(f"You don't have {points} points.")
                 else:
                     raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
             else:
@@ -101,7 +145,3 @@ class User:
 
         except json.decoder.JSONDecodeError:
             raise errors.NoJsonResponse("Your API key is invalid or you didn't bind your ip correctly. Or addon is being ddossed.")
-
-
-
-
