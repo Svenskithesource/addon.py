@@ -3,7 +3,7 @@ import requests, json, errors, dateutil.parser
 class API:
     def __init__(self, key, api_url="https://addon.to/tools/api.php", user_agent="addon.to-beta-api - request v1.0"):
         self.headers = {'User-agent': user_agent}
-        self.data = {'apikey': key, 'action': '', 'value': 'admin'}
+        self.data = {'apikey': key, 'action': '', 'value': ''}
         self.api_url = api_url
         self.key = key
 
@@ -14,10 +14,10 @@ class API:
         except json.decoder.JSONDecodeError:
             raise errors.NoJsonResponse("Your API key is invalid or you didn't bind your ip correctly. Or addon is being ddossed.")
 
-
     def get_user(self, user):
         data = self.data
         data["action"] = "get_user_info"
+        data["value"] = user
         req = requests.post(self.api_url, data=data, headers=self.headers)
         req = self.__handle_req__(req)
         if "error" in req:
@@ -67,10 +67,10 @@ class API:
             return req["voucher"]
 
 
-    def gift_box(self):
+    def giftbox(self):
         data = self.data
         data["action"] = "gift_box"
-        data.remove("value")
+        del data["value"]
         req = requests.post(self.api_url, data=data, headers=self.headers)
         req = self.__handle_req__(req)
         if "error" in req:
@@ -103,9 +103,11 @@ class Transaction:
         self.points = transaction["points"]
         self.description = transaction["description"]
 
-
     def sender(self):
         return self.api.get_user(sender_id)
+
+    def __str__(self):
+        return self.points
 
 
 
@@ -145,3 +147,6 @@ class User:
 
         except json.decoder.JSONDecodeError:
             raise errors.NoJsonResponse("Your API key is invalid or you didn't bind your ip correctly. Or addon is being ddossed.")
+
+    def __str__(self):
+        return self.username
