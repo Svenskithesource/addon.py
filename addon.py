@@ -58,10 +58,8 @@ class API:
             raise errors.NotEnoughPoints(f"You don't have {points} points")
         req = self.__handle_req__(req)
         if "error" in req:
-            if req["error"] == "redeem_voucher.invalidFormat":
-                raise errors.InvalidVoucherFormat("Invalid voucher format.")
-            elif req["error"] == "redeem_voucher.alreadyInUse":
-                raise errors.VoucherAlreadyRedeemed("Voucher is already redeemed!")
+            if req["error"] == "create_voucher.notEnoughPoints":
+                raise errors.NotEnoughPoints(f"You don't have {points} points")
             else:
                 raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
         else:
