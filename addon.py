@@ -7,43 +7,66 @@ class API:
         self.api_url = api_url
         self.key = key
 
+    def __handle_req__(self, req):
+        try:
+            req = req.json()
+            return req
+        except json.decoder.JSONDecodeError:
+            raise errors.NoJsonResponse("Your API key is invalid or you didn't bind your ip correctly. Or addon is being ddossed.")
+
     def get_user(self, user):
         data = self.data
         data["action"] = "get_user_info"
         req = requests.post(self.api_url, data=data)
-        try:
-            req = req.json()
-            if "error" in req:
-                if req["error"] == "get_user_info.isEmpty":
-                    raise errors.EmptyUserSearch("The search is empty.")
-                elif req["error"] == "get_user_info.InvalidUsername":
-                    raise errors.UserNotFound("The user was not found.")
-                else:
-                    raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        req = self.__handle_req__(req)
+        if "error" in req:
+            if req["error"] == "get_user_info.isEmpty":
+                raise errors.EmptyUserSearch("The search is empty.")
+            elif req["error"] == "get_user_info.InvalidUsername":
+                raise errors.UserNotFound("The user was not found.")
             else:
-                return User(req, self)
-        except json.decoder.JSONDecodeError:
-            raise errors.NoJsonResponse("Your API key is invalid or you didn't bind your ip correctly. Or addon is being ddossed.")
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return User(req, self)
+
 
     def redeem_voucher(self, voucher):
         data = self.data
         data["action"] = "redeem_voucher"
         data["value"] = voucher
         req = requests.post(self.api_url, data=data)
-        try:
-            req = req.json()
-            if "error" in req:
-                if req["error"] == "redeem_voucher.invalidFormat":
-                    raise errors.InvalidVoucherFormat("Invalid voucher format.")
-                elif req["error"] == "redeem_voucher.alreadyInUse":
-                    raise errors.VoucherAlreadyRedeemed("Voucher is already redeemed!")
-                else:
-                    raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        req = self.__handle_req__(req)
+        if "error" in req:
+            if req["error"] == "redeem_voucher.invalidFormat":
+                raise errors.InvalidVoucherFormat("Invalid voucher format.")
+            elif req["error"] == "redeem_voucher.alreadyInUse":
+                raise errors.VoucherAlreadyRedeemed("Voucher is already redeemed!")
             else:
-                return [req["msg"].strip().split(" ")[4], req["msg"].strip().split(" ")[-2]]
-        except json.decoder.JSONDecodeError:
-            raise errors.NoJsonResponse("Your API key is invalid or you didn't bind your ip correctly. Or addon is being ddossed.")
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return [req["msg"].strip().split(" ")[4], req["msg"].strip().split(" ")[-2]]
+        
 
+    def create_voucher(self, points):
+        if not points or points % 50 or points > 100000 or points < 50:
+            raise errors.PointFormatWrong("The points need to be a multiple of 50 and between 50-100k.")
+        data = self.data
+        data["action"] = "create_voucher"
+        data["value"] = str(points)
+        req = requests.post(self.api_url, data=data)
+        if req.text == "null":
+            raise errors.NotEnoughPoints(f"You don't have {points} points")
+        req = self.__handle_req__(req)
+        if "error" in req:
+            if req["error"] == "redeem_voucher.invalidFormat":
+                raise errors.InvalidVoucherFormat("Invalid voucher format.")
+            elif req["error"] == "redeem_voucher.alreadyInUse":
+                raise errors.VoucherAlreadyRedeemed("Voucher is already redeemed!")
+            else:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return req["voucher"]
+        
 
 class User:
     def __init__(self, rjson, api:API):
