@@ -1,7 +1,7 @@
 class NoJsonResponse(Exception):
     pass
 
-class EmptyUserSearch(Exception):
+class EmptySearch(Exception):
     pass
 
 class UserNotFound(Exception):

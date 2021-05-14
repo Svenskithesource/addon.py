@@ -22,7 +22,7 @@ class API:
         req = self.__handle_req__(req)
         if "error" in req:
             if req["error"] == "get_user_info.isEmpty":
-                raise errors.EmptyUserSearch("The search is empty.")
+                raise errors.EmptySearch("The search is empty.")
             elif req["error"] == "get_user_info.InvalidUsername":
                 raise errors.UserNotFound("The user was not found.")
             else:
@@ -110,7 +110,32 @@ class API:
         else:
             return True
 
+    def steam_to_ip(self, search):
+        if not search:
+            raise errors.EmptySearch("The search is empty.")
+        data = self.data
+        data["action"] = "steam_to_ip"
+        data["value"] = search
+        req = requests.post(self.api_url, data=data, headers=self.headers)
+        req = self.__handle_req__(req)
+        if "error" in req:
+            if req["error"] == "steamToIp.premiumPlusRequired":
+                raise errors.NoPremiumPlus("You need premium plus or 10k points")
+            else:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return [SteamUser(user) for user in req["output"]]
         
+class SteamUser:
+    def __init__(self, user):
+        self.ip = user["ip"]
+        self.steam_id = user["steam_id"]
+
+    def geolocation(self):
+        return requests.get(f"http://ip-api.com/json/" + self.ip).json()
+
+    def __str__(self):
+        return self.ip
 
 class Transaction:
     def __init__(self, transaction, api):
