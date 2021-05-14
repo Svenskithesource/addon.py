@@ -133,7 +133,10 @@ class API:
         req = requests.post(self.api_url, data=data, headers=self.headers)
         req = self.__handle_req__(req)
         if "error" in req:
-            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+            if req["error"] == "ipLogger.premiumPlusIsRequired":
+                raise errors.NoPremiumPlus("You need premium plus or 10k points")
+            else:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
         else:
             url = req["output"]
             if redirect_url:
@@ -154,7 +157,10 @@ class API:
         req = requests.post(self.api_url, data=data, headers=self.headers)
         req = self.__handle_req__(req)
         if "error" in req:
-            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+            if req["error"] == "ipLogger.premiumPlusIsRequired":
+                raise errors.NoPremiumPlus("You need premium plus or 10k points")
+            else:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
         else:
             return req["output"]
 
@@ -165,7 +171,10 @@ class API:
         req = requests.post(self.api_url, data=data, headers=self.headers)
         req = self.__handle_req__(req)
         if "error" in req:
-            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+            if req["error"] == "ipLogger.premiumPlusIsRequired":
+                raise errors.NoPremiumPlus("You need premium plus or 10k points")
+            else:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
         else:
             return True
 
@@ -175,7 +184,10 @@ class API:
         req = requests.post(self.api_url, data=data, headers=self.headers)
         req = self.__handle_req__(req)
         if "error" in req:
-            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+            if req["error"] == "ipLogger.premiumPlusIsRequired":
+                raise errors.NoPremiumPlus("You need premium plus or 10k points")
+            else:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
         else:
             return True
 
@@ -185,7 +197,10 @@ class API:
         req = requests.post(self.api_url, data=data, headers=self.headers)
         req = self.__handle_req__(req)
         if "error" in req:
-            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+            if req["error"] == "ipLogger.premiumPlusIsRequired":
+                raise errors.NoPremiumPlus("You need premium plus or 10k points")
+            else:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
         else:
             return [LoggedIp(ip) for ip in req["output"]]
 
