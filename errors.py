@@ -1,7 +1,7 @@
 class NoJsonResponse(Exception):
     pass
 
-class EmptyUserSearch(Exception):
+class EmptySearch(Exception):
     pass
 
 class UserNotFound(Exception):
@@ -23,6 +23,9 @@ class GiftboxOnCooldown(Exception):
     pass
 
 class UserBanned(Exception):
+    pass
+
+class NoPremiumPlus(Exception):
     pass
 
 class UnknownError(Exception):
