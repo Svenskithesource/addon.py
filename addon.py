@@ -94,6 +94,22 @@ class API:
         else:
             return [Transaction(transaction, self) for transaction in req["transactions"]]
 
+
+    def flood_email(self, email):
+        data = self.data
+        data["action"] = "flood_email"
+        data["email_to_flood"] = email
+        del data["value"]
+        req = requests.post(self.api_url, data=data, headers=self.headers)
+        req = self.__handle_req__(req)
+        if "error" in req:
+            if req["error"] == "email_flood.youNeedPremiumPlus":
+                raise errors.NoPremiumPlus("You need premium plus or 10k points.")
+            else:
+                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return True
+
         
 
 class Transaction:

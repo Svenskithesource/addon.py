@@ -25,5 +25,8 @@ class GiftboxOnCooldown(Exception):
 class UserBanned(Exception):
     pass
 
+class NoPremiumPlus(Exception):
+    pass
+
 class UnknownError(Exception):
     pass
