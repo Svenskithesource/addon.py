@@ -125,6 +125,81 @@ class API:
                 raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
         else:
             return [SteamUser(user) for user in req["output"]]
+
+    def create_ip_logger(self, redirect_url=""):
+        data = self.data
+        data["action"] = "ip_logger"
+        data["value"] = "3" # generate new link
+        req = requests.post(self.api_url, data=data, headers=self.headers)
+        req = self.__handle_req__(req)
+        if "error" in req:
+            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            url = req["output"]
+            if redirect_url:
+                data["value"] = "5" # set redirect url
+                data["url"] = redirect_url
+                req = requests.post(self.api_url, data=data, headers=self.headers)
+                req = self.__handle_req__(req)
+                if "error" in req:
+                    raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+
+            return url
+
+
+    def ip_logger_url(self):
+        data = self.data
+        data["action"] = "ip_logger"
+        data["value"] = "1" # get ip logger url
+        req = requests.post(self.api_url, data=data, headers=self.headers)
+        req = self.__handle_req__(req)
+        if "error" in req:
+            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return req["output"]
+
+    def set_ip_logger_redirect(self, redirect_url):
+        data = self.data
+        data["value"] = "5" # set redirect url
+        data["url"] = redirect_url
+        req = requests.post(self.api_url, data=data, headers=self.headers)
+        req = self.__handle_req__(req)
+        if "error" in req:
+            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return True
+
+    def delete_ip_logs(self):
+        data = self.data
+        data["value"] = "2" # delete logged ips
+        req = requests.post(self.api_url, data=data, headers=self.headers)
+        req = self.__handle_req__(req)
+        if "error" in req:
+            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return True
+
+    def get_ip_logs(self):
+        data = self.data
+        data["value"] = "4" # get logged ips
+        req = requests.post(self.api_url, data=data, headers=self.headers)
+        req = self.__handle_req__(req)
+        if "error" in req:
+            raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+        else:
+            return [LoggedIp(ip) for ip in req["output"]]
+
+class LoggedIp:
+    def __init__(self, rjson):
+        self.ip = rjson["ip"]
+        self.user_agent = rjson["user_agent"]
+
+    def geolocation(self):
+        return requests.get(f"http://ip-api.com/json/" + self.ip).json()
+
+    def __str__(self):
+        return self.ip
+
         
 class SteamUser:
     def __init__(self, user):
