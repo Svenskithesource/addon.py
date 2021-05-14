@@ -1,0 +1,692 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>addon &mdash; addon.py 0.0.1ki documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> addon.py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../addon.html">addon module</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">addon.py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>addon</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for addon</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">errors</span><span class="o">,</span> <span class="nn">dateutil.parser</span><span class="o">,</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+
+<div class="viewcode-block" id="User"><a class="viewcode-back" href="../addon.html#addon.User">[docs]</a><span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;An addon user</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        points (str): The user&#39;s points</span>
+<span class="sd">        premium_plan (str): Their premium plan or None if no premium plan</span>
+<span class="sd">        register_date (datetime.datetime): The register date or None if they are really OG</span>
+<span class="sd">        status (str): Their status, either &quot;banned&quot;, &quot;user&quot;, &quot;mod&quot;, &quot;admin&quot;</span>
+<span class="sd">        user_id (str): Their user id</span>
+<span class="sd">        username (str): The username</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rjson</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">headers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_url</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">api_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;points&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_date</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;register_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">dateutil</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+            <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;register_date&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">premium_plan</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;premium_plan&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;premium_plan&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">rjson</span><span class="p">[</span>
+            <span class="s2">&quot;premium_plan&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="User.send_points"><a class="viewcode-back" href="../addon.html#addon.User.send_points">[docs]</a>    <span class="k">def</span> <span class="nf">send_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Send points to the user</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            points (int, optional): The amount of points you want to send (default 50)</span>
+<span class="sd">            description (str, optional): The description with the transaction</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if successful</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.NoJsonResponse: The API didn&#39;t respond with a json response</span>
+<span class="sd">            errors.NotEnoughPoints: You don&#39;t have enough points for this transaction</span>
+<span class="sd">            errors.PointFormatWrong: The points need to be a multiple of 50 and between 50-100k</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">            errors.UserBanned: The user you are trying to send points to is banned</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;banned&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UserBanned</span><span class="p">(</span><span class="s2">&quot;User is banned.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">points</span> <span class="ow">or</span> <span class="n">points</span> <span class="o">%</span> <span class="mi">50</span> <span class="ow">or</span> <span class="n">points</span> <span class="o">&gt;</span> <span class="mi">100000</span> <span class="ow">or</span> <span class="n">points</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">PointFormatWrong</span><span class="p">(</span><span class="s2">&quot;The points need to be a multiple of 50 and between 50-100k.&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;send_points&quot;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;to_user_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;send_points.notEnoughPoints&quot;</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NotEnoughPoints</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You don&#39;t have </span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s2"> points.&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoJsonResponse</span><span class="p">(</span>
+                <span class="s2">&quot;Your API key is invalid or you didn&#39;t bind your ip correctly. Or addon is being ddossed.&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span></div>
+
+
+<div class="viewcode-block" id="LoggedIp"><a class="viewcode-back" href="../addon.html#addon.LoggedIp">[docs]</a><span class="k">class</span> <span class="nc">LoggedIp</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A logged ip</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        ip (str): The ip</span>
+<span class="sd">        user_agent (str): The user agent used to visit the ip logger</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rjson</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip</span> <span class="o">=</span> <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">rjson</span><span class="p">[</span><span class="s2">&quot;user_agent&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="LoggedIp.geolocation"><a class="viewcode-back" href="../addon.html#addon.LoggedIp.geolocation">[docs]</a>    <span class="k">def</span> <span class="nf">geolocation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the geolocation of the ip</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dict with the information about the ip</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://ip-api.com/json/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip</span></div>
+
+
+<div class="viewcode-block" id="SteamUser"><a class="viewcode-back" href="../addon.html#addon.SteamUser">[docs]</a><span class="k">class</span> <span class="nc">SteamUser</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Information about a steam user</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        ip (str): The ip of the steam user</span>
+<span class="sd">        steam_id (str): The steam id</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steam_id</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s2">&quot;steam_id&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SteamUser.geolocation"><a class="viewcode-back" href="../addon.html#addon.SteamUser.geolocation">[docs]</a>    <span class="k">def</span> <span class="nf">geolocation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the geolocation of the ip</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dict with the information about the ip</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://ip-api.com/json/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip</span></div>
+
+
+<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../addon.html#addon.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A transaction</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        description (List[Union[str, bool]]): The description supplied with the transaction or None when no description was supplied</span>
+<span class="sd">        points (str): The points sent</span>
+<span class="sd">        sender_id (str): The id of the sender</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__api__</span> <span class="o">=</span> <span class="n">api</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sender_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="p">[</span><span class="s2">&quot;from_user_id&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">transaction</span><span class="p">[</span><span class="s2">&quot;points&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">transaction</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">transaction</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Transaction.sender"><a class="viewcode-back" href="../addon.html#addon.Transaction.sender">[docs]</a>    <span class="k">def</span> <span class="nf">sender</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the User object of the sender</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            User: The sender</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__api__</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sender_id</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span></div>
+
+
+<div class="viewcode-block" id="API"><a class="viewcode-back" href="../addon.html#addon.API">[docs]</a><span class="k">class</span> <span class="nc">API</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The API object used to communicate with the api</span>
+<span class="sd">        </span>
+<span class="sd">    Args:</span>
+<span class="sd">        key (str): Your addon api key</span>
+<span class="sd">        api_url (str, optional): The current addon api url</span>
+<span class="sd">        user_agent (str, optional): The addon user agent</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">api_url</span><span class="o">=</span><span class="s2">&quot;https://addon.to/tools/api.php&quot;</span><span class="p">,</span> <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;addon.to-beta-api - request v1.0&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;User-agent&#39;</span><span class="p">:</span> <span class="n">user_agent</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apikey&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span> <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_url</span> <span class="o">=</span> <span class="n">api_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+
+    <span class="k">def</span> <span class="nf">__handle_req__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">req</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoJsonResponse</span><span class="p">(</span>
+                <span class="s2">&quot;Your API key is invalid or you didn&#39;t bind your ip correctly. Or addon is being ddossed.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="API.get_user"><a class="viewcode-back" href="../addon.html#addon.API.get_user">[docs]</a>    <span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a user via username or discord id</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            user (str): User search</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            User: A user object</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.EmptySearch: The search can&#39;t be empty</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">            errors.UserNotFound: The searched user was not found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;get_user_info&quot;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;get_user_info.isEmpty&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">EmptySearch</span><span class="p">(</span><span class="s2">&quot;The search is empty.&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;get_user_info.InvalidUsername&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UserNotFound</span><span class="p">(</span><span class="s2">&quot;The user was not found.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="API.redeem_voucher"><a class="viewcode-back" href="../addon.html#addon.API.redeem_voucher">[docs]</a>    <span class="k">def</span> <span class="nf">redeem_voucher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voucher</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Redeem a voucher</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            voucher (str): The voucher you want to redeem</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List[str]: Returns a list with the username and points, respectively</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.InvalidVoucherFormat: Not a valid voucher format</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">            errors.VoucherAlreadyRedeemed: The supplied voucher is already redeemed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;redeem_voucher&quot;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">voucher</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;redeem_voucher.invalidFormat&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">InvalidVoucherFormat</span><span class="p">(</span><span class="s2">&quot;Invalid voucher format.&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;redeem_voucher.alreadyInUse&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">VoucherAlreadyRedeemed</span><span class="p">(</span><span class="s2">&quot;Voucher is already redeemed!&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">req</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">4</span><span class="p">],</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="API.create_voucher"><a class="viewcode-back" href="../addon.html#addon.API.create_voucher">[docs]</a>    <span class="k">def</span> <span class="nf">create_voucher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a voucher</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            points (int): The size of the voucher</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The created voucher</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.NotEnoughPoints: You don&#39;t have enough points to create this voucher</span>
+<span class="sd">            errors.PointFormatWrong: The points need to be a multiple of 50 and between 50-100k.</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">points</span> <span class="ow">or</span> <span class="n">points</span> <span class="o">%</span> <span class="mi">50</span> <span class="ow">or</span> <span class="n">points</span> <span class="o">&gt;</span> <span class="mi">100000</span> <span class="ow">or</span> <span class="n">points</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">PointFormatWrong</span><span class="p">(</span><span class="s2">&quot;The points need to be a multiple of 50 and between 50-100k.&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;create_voucher&quot;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NotEnoughPoints</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You don&#39;t have </span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s2"> points.&quot;</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;create_voucher.notEnoughPoints&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NotEnoughPoints</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You don&#39;t have </span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s2"> points.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;voucher&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="API.giftbox"><a class="viewcode-back" href="../addon.html#addon.API.giftbox">[docs]</a>    <span class="k">def</span> <span class="nf">giftbox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Try to spin the gift box</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Returns the points you won</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.GiftboxOnCooldown: The gift box is on cooldown</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;gift_box&quot;</span>
+        <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gift_box.12HourCooldown&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">GiftboxOnCooldown</span><span class="p">(</span><span class="s2">&quot;Giftbox is on a 12h cooldown.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="API.transactions"><a class="viewcode-back" href="../addon.html#addon.API.transactions">[docs]</a>    <span class="k">def</span> <span class="nf">transactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receive_transactions_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">send_transactions_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Transaction</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get a list of the last 25 transactions</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            receive_transactions_only (bool, optional): Get only the received transactions</span>
+<span class="sd">            send_transactions_only (bool, optional): Get only the send transactions</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Transaction]: A list of all the transactions</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">receive_transactions_only</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">send_transactions_only</span> <span class="k">else</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">send_transactions_only</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">receive_transactions_only</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;get_transactions&quot;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;transactions&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unexpected response: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">Transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">transaction</span> <span class="ow">in</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;transactions&quot;</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="API.flood_email"><a class="viewcode-back" href="../addon.html#addon.API.flood_email">[docs]</a>    <span class="k">def</span> <span class="nf">flood_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Flood an email address, you need premium+ or 10k points</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            email (str): The email to flood</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if it was successful</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.NoPremiumPlus: You need premium+ or 10k points</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;flood_email&quot;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;email_to_flood&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;email_flood.youNeedPremiumPlus&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoPremiumPlus</span><span class="p">(</span><span class="s2">&quot;You need premium plus or 10k points.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="API.steam_to_ip"><a class="viewcode-back" href="../addon.html#addon.API.steam_to_ip">[docs]</a>    <span class="k">def</span> <span class="nf">steam_to_ip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SteamUser</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Search breached/leaked server databases to get an ip from a username or steam id, you need premium+ or 10k points</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            search (str): A username or ip or steam id</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List[SteamUser]: A list with all the results</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.EmptySearch: Your search is empty</span>
+<span class="sd">            errors.NoPremiumPlus: You need premium+ or 10k points</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">search</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">EmptySearch</span><span class="p">(</span><span class="s2">&quot;The search is empty.&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;steam_to_ip&quot;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;steamToIp.premiumPlusRequired&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoPremiumPlus</span><span class="p">(</span><span class="s2">&quot;You need premium plus or 10k points&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">SteamUser</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="API.create_ip_logger"><a class="viewcode-back" href="../addon.html#addon.API.create_ip_logger">[docs]</a>    <span class="k">def</span> <span class="nf">create_ip_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">redirect_url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a new ip logger url, you need premium+ or 10k points</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            redirect_url (str, optional): The redirect url</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The ip logger url</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.NoPremiumPlus: You need premium or 10k points</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ip_logger&quot;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>  <span class="c1"># generate new link</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ipLogger.premiumPlusIsRequired&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoPremiumPlus</span><span class="p">(</span><span class="s2">&quot;You need premium plus or 10k points&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">redirect_url</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;5&quot;</span>  <span class="c1"># set redirect url</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">redirect_url</span>
+                <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+                <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="n">url</span></div>
+
+<div class="viewcode-block" id="API.ip_logger_url"><a class="viewcode-back" href="../addon.html#addon.API.ip_logger_url">[docs]</a>    <span class="k">def</span> <span class="nf">ip_logger_url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the current ip logger url</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The corrent ip logger url</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.NoPremiumPlus: You need premium or 10k points</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ip_logger&quot;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>  <span class="c1"># get ip logger url</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ipLogger.premiumPlusIsRequired&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoPremiumPlus</span><span class="p">(</span><span class="s2">&quot;You need premium plus or 10k points&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="API.set_ip_logger_redirect"><a class="viewcode-back" href="../addon.html#addon.API.set_ip_logger_redirect">[docs]</a>    <span class="k">def</span> <span class="nf">set_ip_logger_redirect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">redirect_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set the redirect for the ip logger</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            redirect_url (str): The redirect url to redirect to</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if successful</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.NoPremiumPlus: You need premium or 10k points</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;5&quot;</span>  <span class="c1"># set redirect url</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">redirect_url</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ipLogger.premiumPlusIsRequired&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoPremiumPlus</span><span class="p">(</span><span class="s2">&quot;You need premium plus or 10k points&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="API.delete_ip_logs"><a class="viewcode-back" href="../addon.html#addon.API.delete_ip_logs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_ip_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Delete the logged ips</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if successful</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.NoPremiumPlus: You need premium or 10k points</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span>  <span class="c1"># delete logged ips</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ipLogger.premiumPlusIsRequired&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoPremiumPlus</span><span class="p">(</span><span class="s2">&quot;You need premium plus or 10k points&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="API.get_ip_logs"><a class="viewcode-back" href="../addon.html#addon.API.get_ip_logs">[docs]</a>    <span class="k">def</span> <span class="nf">get_ip_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LoggedIp</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get all logged ips in a list</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List[LoggedIp]: A list with all the logged ips</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            errors.NoPremiumPlus: You need premium or 10k points</span>
+<span class="sd">            errors.UnknownError: The error was not recognized, the response is printed out with the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;4&quot;</span>  <span class="c1"># get logged ips</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_req__</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ipLogger.premiumPlusIsRequired&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">NoPremiumPlus</span><span class="p">(</span><span class="s2">&quot;You need premium plus or 10k points&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnknownError</span><span class="p">(</span><span class="s2">&quot;API responded with an unrecognized error: &quot;</span> <span class="o">+</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">LoggedIp</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span> <span class="k">for</span> <span class="n">ip</span> <span class="ow">in</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]]</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, svenskithesource, shizo.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

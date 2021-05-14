@@ -1,0 +1,735 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>addon module &mdash; addon.py 0.0.1ki documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to addon.py’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> addon.py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">addon module</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">addon.py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>addon module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/addon.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-addon">
+<span id="addon-module"></span><h1>addon module<a class="headerlink" href="#module-addon" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="addon.API">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">addon.</span></span><span class="sig-name descname"><span class="pre">API</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://addon.to/tools/api.php'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'addon.to-beta-api</span> <span class="pre">-</span> <span class="pre">request</span> <span class="pre">v1.0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/addon.html#API"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The API object used to communicate with the api</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – Your addon api key</p></li>
+<li><p><strong>api_url</strong> (<em>str</em><em>, </em><em>optional</em>) – The current addon api url</p></li>
+<li><p><strong>user_agent</strong> (<em>str</em><em>, </em><em>optional</em>) – The addon user agent</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.create_ip_logger">
+<span class="sig-name descname"><span class="pre">create_ip_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">redirect_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/addon.html#API.create_ip_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.create_ip_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new ip logger url, you need premium+ or 10k points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>redirect_url</strong> (<em>str</em><em>, </em><em>optional</em>) – The redirect url</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The ip logger url</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.NoPremiumPlus" title="errors.NoPremiumPlus"><strong>errors.NoPremiumPlus</strong></a> – You need premium or 10k points</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.create_voucher">
+<span class="sig-name descname"><span class="pre">create_voucher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/addon.html#API.create_voucher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.create_voucher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a voucher</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>points</strong> (<em>int</em>) – The size of the voucher</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The created voucher</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.NotEnoughPoints" title="errors.NotEnoughPoints"><strong>errors.NotEnoughPoints</strong></a> – You don’t have enough points to create this voucher</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.PointFormatWrong" title="errors.PointFormatWrong"><strong>errors.PointFormatWrong</strong></a> – The points need to be a multiple of 50 and between 50-100k.</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.delete_ip_logs">
+<span class="sig-name descname"><span class="pre">delete_ip_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/addon.html#API.delete_ip_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.delete_ip_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the logged ips</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if successful</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.NoPremiumPlus" title="errors.NoPremiumPlus"><strong>errors.NoPremiumPlus</strong></a> – You need premium or 10k points</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.flood_email">
+<span class="sig-name descname"><span class="pre">flood_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/addon.html#API.flood_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.flood_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flood an email address, you need premium+ or 10k points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email to flood</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if it was successful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.NoPremiumPlus" title="errors.NoPremiumPlus"><strong>errors.NoPremiumPlus</strong></a> – You need premium+ or 10k points</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.get_ip_logs">
+<span class="sig-name descname"><span class="pre">get_ip_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#addon.LoggedIp" title="addon.LoggedIp"><span class="pre">addon.LoggedIp</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/addon.html#API.get_ip_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.get_ip_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all logged ips in a list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list with all the logged ips</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="#addon.LoggedIp" title="addon.LoggedIp">LoggedIp</a>]</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.NoPremiumPlus" title="errors.NoPremiumPlus"><strong>errors.NoPremiumPlus</strong></a> – You need premium or 10k points</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.get_user">
+<span class="sig-name descname"><span class="pre">get_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/addon.html#API.get_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a user via username or discord id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user</strong> (<em>str</em>) – User search</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A user object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#addon.User" title="addon.User">User</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.EmptySearch" title="errors.EmptySearch"><strong>errors.EmptySearch</strong></a> – The search can’t be empty</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UserNotFound" title="errors.UserNotFound"><strong>errors.UserNotFound</strong></a> – The searched user was not found</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.giftbox">
+<span class="sig-name descname"><span class="pre">giftbox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/addon.html#API.giftbox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.giftbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to spin the gift box</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns the points you won</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.GiftboxOnCooldown" title="errors.GiftboxOnCooldown"><strong>errors.GiftboxOnCooldown</strong></a> – The gift box is on cooldown</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.ip_logger_url">
+<span class="sig-name descname"><span class="pre">ip_logger_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/addon.html#API.ip_logger_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.ip_logger_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current ip logger url</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The corrent ip logger url</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.NoPremiumPlus" title="errors.NoPremiumPlus"><strong>errors.NoPremiumPlus</strong></a> – You need premium or 10k points</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.redeem_voucher">
+<span class="sig-name descname"><span class="pre">redeem_voucher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">voucher</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/addon.html#API.redeem_voucher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.redeem_voucher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redeem a voucher</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>voucher</strong> (<em>str</em>) – The voucher you want to redeem</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a list with the username and points, respectively</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.InvalidVoucherFormat" title="errors.InvalidVoucherFormat"><strong>errors.InvalidVoucherFormat</strong></a> – Not a valid voucher format</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.VoucherAlreadyRedeemed" title="errors.VoucherAlreadyRedeemed"><strong>errors.VoucherAlreadyRedeemed</strong></a> – The supplied voucher is already redeemed</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.set_ip_logger_redirect">
+<span class="sig-name descname"><span class="pre">set_ip_logger_redirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">redirect_url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/addon.html#API.set_ip_logger_redirect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.set_ip_logger_redirect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the redirect for the ip logger</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>redirect_url</strong> (<em>str</em>) – The redirect url to redirect to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if successful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.NoPremiumPlus" title="errors.NoPremiumPlus"><strong>errors.NoPremiumPlus</strong></a> – You need premium or 10k points</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.steam_to_ip">
+<span class="sig-name descname"><span class="pre">steam_to_ip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#addon.SteamUser" title="addon.SteamUser"><span class="pre">addon.SteamUser</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/addon.html#API.steam_to_ip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.steam_to_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search breached/leaked server databases to get an ip from a username or steam id, you need premium+ or 10k points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>search</strong> (<em>str</em>) – A username or ip or steam id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list with all the results</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#addon.SteamUser" title="addon.SteamUser">SteamUser</a>]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.EmptySearch" title="errors.EmptySearch"><strong>errors.EmptySearch</strong></a> – Your search is empty</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.NoPremiumPlus" title="errors.NoPremiumPlus"><strong>errors.NoPremiumPlus</strong></a> – You need premium+ or 10k points</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.API.transactions">
+<span class="sig-name descname"><span class="pre">transactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">receive_transactions_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send_transactions_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#addon.Transaction" title="addon.Transaction"><span class="pre">addon.Transaction</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/addon.html#API.transactions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.API.transactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of the last 25 transactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>receive_transactions_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – Get only the received transactions</p></li>
+<li><p><strong>send_transactions_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – Get only the send transactions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of all the transactions</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#addon.Transaction" title="addon.Transaction">Transaction</a>]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="addon.LoggedIp">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">addon.</span></span><span class="sig-name descname"><span class="pre">LoggedIp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rjson</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/addon.html#LoggedIp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.LoggedIp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A logged ip</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.LoggedIp.ip">
+<span class="sig-name descname"><span class="pre">ip</span></span><a class="headerlink" href="#addon.LoggedIp.ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>The ip</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.LoggedIp.user_agent">
+<span class="sig-name descname"><span class="pre">user_agent</span></span><a class="headerlink" href="#addon.LoggedIp.user_agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>The user agent used to visit the ip logger</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.LoggedIp.geolocation">
+<span class="sig-name descname"><span class="pre">geolocation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/addon.html#LoggedIp.geolocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.LoggedIp.geolocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the geolocation of the ip</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dict with the information about the ip</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="addon.SteamUser">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">addon.</span></span><span class="sig-name descname"><span class="pre">SteamUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/addon.html#SteamUser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.SteamUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Information about a steam user</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.SteamUser.ip">
+<span class="sig-name descname"><span class="pre">ip</span></span><a class="headerlink" href="#addon.SteamUser.ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>The ip of the steam user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.SteamUser.steam_id">
+<span class="sig-name descname"><span class="pre">steam_id</span></span><a class="headerlink" href="#addon.SteamUser.steam_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The steam id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.SteamUser.geolocation">
+<span class="sig-name descname"><span class="pre">geolocation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/addon.html#SteamUser.geolocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.SteamUser.geolocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the geolocation of the ip</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dict with the information about the ip</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="addon.Transaction">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">addon.</span></span><span class="sig-name descname"><span class="pre">Transaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/addon.html#Transaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A transaction</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.Transaction.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#addon.Transaction.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>The description supplied with the transaction or None when no description was supplied</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[Union[str, bool]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.Transaction.points">
+<span class="sig-name descname"><span class="pre">points</span></span><a class="headerlink" href="#addon.Transaction.points" title="Permalink to this definition">¶</a></dt>
+<dd><p>The points sent</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.Transaction.sender_id">
+<span class="sig-name descname"><span class="pre">sender_id</span></span><a class="headerlink" href="#addon.Transaction.sender_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The id of the sender</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.Transaction.sender">
+<span class="sig-name descname"><span class="pre">sender</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#addon.User" title="addon.User"><span class="pre">addon.User</span></a><a class="reference internal" href="_modules/addon.html#Transaction.sender"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.Transaction.sender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the User object of the sender</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The sender</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#addon.User" title="addon.User">User</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="addon.User">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">addon.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rjson</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/addon.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An addon user</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.User.points">
+<span class="sig-name descname"><span class="pre">points</span></span><a class="headerlink" href="#addon.User.points" title="Permalink to this definition">¶</a></dt>
+<dd><p>The user’s points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.User.premium_plan">
+<span class="sig-name descname"><span class="pre">premium_plan</span></span><a class="headerlink" href="#addon.User.premium_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Their premium plan or None if no premium plan</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.User.register_date">
+<span class="sig-name descname"><span class="pre">register_date</span></span><a class="headerlink" href="#addon.User.register_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>The register date or None if they are really OG</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime.datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.User.status">
+<span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#addon.User.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Their status, either “banned”, “user”, “mod”, “admin”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.User.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#addon.User.user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Their user id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="addon.User.username">
+<span class="sig-name descname"><span class="pre">username</span></span><a class="headerlink" href="#addon.User.username" title="Permalink to this definition">¶</a></dt>
+<dd><p>The username</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="addon.User.send_points">
+<span class="sig-name descname"><span class="pre">send_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/addon.html#User.send_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#addon.User.send_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send points to the user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<em>int</em><em>, </em><em>optional</em>) – The amount of points you want to send (default 50)</p></li>
+<li><p><strong>description</strong> (<em>str</em><em>, </em><em>optional</em>) – The description with the transaction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if successful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="errors.html#errors.NoJsonResponse" title="errors.NoJsonResponse"><strong>errors.NoJsonResponse</strong></a> – The API didn’t respond with a json response</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.NotEnoughPoints" title="errors.NotEnoughPoints"><strong>errors.NotEnoughPoints</strong></a> – You don’t have enough points for this transaction</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.PointFormatWrong" title="errors.PointFormatWrong"><strong>errors.PointFormatWrong</strong></a> – The points need to be a multiple of 50 and between 50-100k</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UnknownError" title="errors.UnknownError"><strong>errors.UnknownError</strong></a> – The error was not recognized, the response is printed out with the error</p></li>
+<li><p><a class="reference internal" href="errors.html#errors.UserBanned" title="errors.UserBanned"><strong>errors.UserBanned</strong></a> – The user you are trying to send points to is banned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to addon.py’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, svenskithesource, shizo.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
