@@ -1,15 +1,15 @@
-import requests, json, errors, dateutil.parser
+import requests, json, errors, dateutil.parser, datetime
 
 class API:
+    """The API object used to communicate with the api
+        
+    Args:
+        key (str): Your addon api key
+        api_url (str, optional): The current addon api url
+        user_agent (str, optional): The addon user agent
+    """
 
     def __init__(self, key, api_url="https://addon.to/tools/api.php", user_agent="addon.to-beta-api - request v1.0"):
-        """The API object used to communicate with the api
-        
-        Args:
-            key (str): Your addon api key
-            api_url (str, optional): The current addon api url
-            user_agent (str, optional): The addon user agent
-        """
         self.headers = {'User-agent': user_agent}
         self.data = {'apikey': key, 'action': '', 'value': ''}
         self.api_url = api_url
@@ -138,7 +138,7 @@ class API:
             return req["msg"].split(" ")[-2]
 
 
-    def get_transactions(self, receive_transactions_only=False, send_transactions_only=False) -> List[Transaction]:
+    def transactions(self, receive_transactions_only=False, send_transactions_only=False) -> List[Transaction]:
         """Get a list of the last 25 transactions
         
         Args:
@@ -230,7 +230,7 @@ class API:
         
         Raises:
             errors.NoPremiumPlus: You need premium or 10k points
-            errors.UnknownError: Description
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
         """
         data = self.data
         data["action"] = "ip_logger"
@@ -255,7 +255,16 @@ class API:
             return url
 
 
-    def ip_logger_url(self):
+    def ip_logger_url(self) -> str:
+        """Get the current ip logger url
+        
+        Returns:
+            str: The corrent ip logger url
+        
+        Raises:
+            errors.NoPremiumPlus: You need premium or 10k points
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+        """
         data = self.data
         data["action"] = "ip_logger"
         data["value"] = "1" # get ip logger url
@@ -269,7 +278,19 @@ class API:
         else:
             return req["output"]
 
-    def set_ip_logger_redirect(self, redirect_url):
+    def set_ip_logger_redirect(self, redirect_url:str) -> bool:
+        """Set the redirect for the ip logger
+        
+        Args:
+            redirect_url (str): The redirect url to redirect to
+        
+        Returns:
+            bool: True if successful
+        
+        Raises:
+            errors.NoPremiumPlus: You need premium or 10k points
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+        """
         data = self.data
         data["value"] = "5" # set redirect url
         data["url"] = redirect_url
@@ -283,7 +304,16 @@ class API:
         else:
             return True
 
-    def delete_ip_logs(self):
+    def delete_ip_logs(self) -> bool:
+        """Delete the logged ips
+        
+        Returns:
+            bool: True if successful
+        
+        Raises:
+            errors.NoPremiumPlus: You need premium or 10k points
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+        """
         data = self.data
         data["value"] = "2" # delete logged ips
         req = requests.post(self.api_url, data=data, headers=self.headers)
@@ -296,7 +326,16 @@ class API:
         else:
             return True
 
-    def get_ip_logs(self):
+    def get_ip_logs(self) -> List[LoggedIp]:
+        """Get all logged ips in a list
+        
+        Returns:
+            List[LoggedIp]: A list with all the logged ips
+        
+        Raises:
+            errors.NoPremiumPlus: You need premium or 10k points
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+        """
         data = self.data
         data["value"] = "4" # get logged ips
         req = requests.post(self.api_url, data=data, headers=self.headers)
@@ -310,11 +349,25 @@ class API:
             return [LoggedIp(ip) for ip in req["output"]]
 
 class LoggedIp:
+
+    """A logged ip
+    
+    Attributes:
+        ip (str): The ip
+        user_agent (str): The user agent used to visit the ip logger
+    """
+
     def __init__(self, rjson):
+
         self.ip = rjson["ip"]
         self.user_agent = rjson["user_agent"]
 
     def geolocation(self):
+        """Get the geolocation of the ip
+        
+        Returns:
+            dict: A dict with the information about the ip
+        """
         return requests.get(f"http://ip-api.com/json/" + self.ip).json()
 
     def __str__(self):
@@ -322,24 +375,49 @@ class LoggedIp:
 
         
 class SteamUser:
+    """Information about a steam user
+    
+    Attributes:
+        ip (str): The ip of the steam user
+        steam_id (str): The steam id
+    """
+
     def __init__(self, user):
         self.ip = user["ip"]
         self.steam_id = user["steam_id"]
 
     def geolocation(self):
+        """Get the geolocation of the ip
+        
+        Returns:
+            dict: A dict with the information about the ip
+        """
         return requests.get(f"http://ip-api.com/json/" + self.ip).json()
 
     def __str__(self):
         return self.ip
 
 class Transaction:
+    """A transaction
+    
+    Attributes:
+        description (List[Union[str, bool]]): The description supplied with the transaction or None when no description was supplied
+        points (str): The points sent
+        sender_id (str): The id of the sender
+    """
+
     def __init__(self, transaction, api):
         self.__api__ = api
         self.sender_id = transaction["from_user_id"]
         self.points = transaction["points"]
-        self.description = transaction["description"]
+        self.description = None if not transaction["description"] else transaction["description"]
 
-    def sender(self):
+    def sender(self) -> User:
+        """Returns the User object of the sender
+        
+        Returns:
+            User: The sender
+        """
         return self.api.get_user(sender_id)
 
     def __str__(self):
@@ -348,6 +426,18 @@ class Transaction:
 
 
 class User:
+
+    """An addon user
+    
+    Attributes:
+        points (str): The user's points
+        premium_plan (str): Their premium plan or None if no premium plan
+        register_date (datetime.datetime): The register date or None if they are really OG
+        status (str): Their status, either "banned", "user", "mod", "admin"
+        user_id (str): Their user id
+        username (str): The username
+    """
+
     def __init__(self, rjson, api:API):
         self.data = api.data
         self.headers = api.headers
@@ -357,10 +447,26 @@ class User:
         self.status = rjson["status"]
         self.points = rjson["points"]
         self.register_date = None if rjson["register_date"].startswith("0") else dateutil.parser.parse(rjson["register_date"])
-        self.premium_plan = None if rjson["points"] == "none" or not rjson["points"] else rjson["points"]
+        self.premium_plan = None if rjson["premium_plan"] == "none" or not rjson["premium_plan"] else rjson["premium_plan"]
 
 
-    def send_points(self, points=50, description=""):
+    def send_points(self, points=50, description="") -> bool:
+        """Send points to the user
+        
+        Args:
+            points (int, optional): The amount of points you want to send (default 50)
+            description (str, optional): The description with the transaction
+        
+        Returns:
+            bool: True if successful
+        
+        Raises:
+            errors.NoJsonResponse: The API didn't respond with a json response
+            errors.NotEnoughPoints: You don't have enough points for this transaction
+            errors.PointFormatWrong: The points need to be a multiple of 50 and between 50-100k
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+            errors.UserBanned: The user you are trying to send points to is banned
+        """
         if self.status == "banned":
             raise errors.UserBanned("User is banned.")
         if not points or points % 50 or points > 100000 or points < 50:
