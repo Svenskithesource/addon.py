@@ -1,7 +1,15 @@
 import requests, json, errors, dateutil.parser
 
 class API:
+
     def __init__(self, key, api_url="https://addon.to/tools/api.php", user_agent="addon.to-beta-api - request v1.0"):
+        """The API object used to communicate with the api
+        
+        Args:
+            key (str): Your addon api key
+            api_url (str, optional): The current addon api url
+            user_agent (str, optional): The addon user agent
+        """
         self.headers = {'User-agent': user_agent}
         self.data = {'apikey': key, 'action': '', 'value': ''}
         self.api_url = api_url
@@ -15,6 +23,19 @@ class API:
             raise errors.NoJsonResponse("Your API key is invalid or you didn't bind your ip correctly. Or addon is being ddossed.")
 
     def get_user(self, user):
+        """Get a user via username or discord id
+        
+        Args:
+            user (str): User search
+        
+        Returns:
+            User: A user object
+        
+        Raises:
+            errors.EmptySearch: The search can't be empty
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+            errors.UserNotFound: The searched user was not found
+        """
         data = self.data
         data["action"] = "get_user_info"
         data["value"] = user
@@ -31,7 +52,20 @@ class API:
             return User(req, self)
 
 
-    def redeem_voucher(self, voucher):
+    def redeem_voucher(self, voucher:str) -> List[str, str]:
+        """Redeem a voucher
+        
+        Args:
+            voucher (str): The voucher you want to redeem
+        
+        Returns:
+            List[str, str]: Returns a list with the username and points, respectively
+        
+        Raises:
+            errors.InvalidVoucherFormat: Not a valid voucher format
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+            errors.VoucherAlreadyRedeemed: The supplied voucher is already redeemed
+        """
         data = self.data
         data["action"] = "redeem_voucher"
         data["value"] = voucher
@@ -48,7 +82,20 @@ class API:
             return [req["msg"].strip().split(" ")[4], req["msg"].strip().split(" ")[-2]]
         
 
-    def create_voucher(self, points):
+    def create_voucher(self, points:int) -> str:
+        """Create a voucher
+        
+        Args:
+            points (int): The size of the voucher
+        
+        Returns:
+            str: The created voucher
+        
+        Raises:
+            errors.NotEnoughPoints: You don't have enough points to create this voucher
+            errors.PointFormatWrong: The points need to be a multiple of 50 and between 50-100k.
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+        """
         if not points or points % 50 or points > 100000 or points < 50:
             raise errors.PointFormatWrong("The points need to be a multiple of 50 and between 50-100k.")
         data = self.data
@@ -67,7 +114,16 @@ class API:
             return req["voucher"]
 
 
-    def giftbox(self):
+    def giftbox(self) -> str:
+        """Try to spin the gift box
+        
+        Returns:
+            str: Returns the points you won
+        
+        Raises:
+            errors.GiftboxOnCooldown: The gift box is on cooldown
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+        """
         data = self.data
         data["action"] = "gift_box"
         del data["value"]
@@ -82,7 +138,19 @@ class API:
             return req["msg"].split(" ")[-2]
 
 
-    def get_transactions(self, receive_transactions_only=False, send_transactions_only=False):
+    def get_transactions(self, receive_transactions_only=False, send_transactions_only=False) -> List[Transaction]:
+        """Get a list of the last 25 transactions
+        
+        Args:
+            receive_transactions_only (bool, optional): Get only the received transactions
+            send_transactions_only (bool, optional): Get only the send transactions
+        
+        Returns:
+            List[Transaction]: A list of all the transactions
+        
+        Raises:
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+        """
         kind = 1 if receive_transactions_only and not send_transactions_only else 2 if send_transactions_only and not receive_transactions_only else 0
         data = self.data
         data["action"] = "get_transactions"
@@ -95,7 +163,19 @@ class API:
             return [Transaction(transaction, self) for transaction in req["transactions"]]
 
 
-    def flood_email(self, email):
+    def flood_email(self, email:str) -> bool:
+        """Flood an email address, you need premium+ or 10k points
+        
+        Args:
+            email (str): The email to flood
+        
+        Returns:
+            bool: True if it was successful
+        
+        Raises:
+            errors.NoPremiumPlus: You need premium+ or 10k points
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+        """
         data = self.data
         data["action"] = "flood_email"
         data["email_to_flood"] = email
@@ -110,7 +190,20 @@ class API:
         else:
             return True
 
-    def steam_to_ip(self, search):
+    def steam_to_ip(self, search:str) -> List[SteamUser]:
+        """Search breached/leaked server databases to get an ip from a username or steam id, you need premium+ or 10k points
+        
+        Args:
+            search (str): A username or ip or steam id
+        
+        Returns:
+            List[SteamUser]: A list with all the results
+        
+        Raises:
+            errors.EmptySearch: Your search is empty
+            errors.NoPremiumPlus: You need premium+ or 10k points
+            errors.UnknownError: The error was not recognized, the response is printed out with the error
+        """
         if not search:
             raise errors.EmptySearch("The search is empty.")
         data = self.data
@@ -126,7 +219,19 @@ class API:
         else:
             return [SteamUser(user) for user in req["output"]]
 
-    def create_ip_logger(self, redirect_url=""):
+    def create_ip_logger(self, redirect_url="") -> str:
+        """Create a new ip logger url, you need premium+ or 10k points
+        
+        Args:
+            redirect_url (str, optional): The redirect url
+        
+        Returns:
+            str: The ip logger url
+        
+        Raises:
+            errors.NoPremiumPlus: You need premium or 10k points
+            errors.UnknownError: Description
+        """
         data = self.data
         data["action"] = "ip_logger"
         data["value"] = "3" # generate new link
