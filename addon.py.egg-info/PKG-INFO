@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: addon.py
+Version: 0.0.1
+Summary: An API Wrapper for addon.to's API
+Home-page: https://github.com/svenskithesource/addon.py
+Author: svenskithesource, shizo
+Author-email: 
+License: UNKNOWN
+Description: # addon.py
+        An API Wrapper for the addon.to API.
+        
+        ## Installation
+        `pip install addon.py`
+        
+        ## How to use
+        Examples can be found in the examples folder. The documentation can be found [here](https://addonpy.readthedocs.io/en/latest/addon.html)
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
