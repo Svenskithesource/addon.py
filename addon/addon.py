@@ -306,186 +306,186 @@ class API:
         else:
             return [Transaction(transaction, self) for transaction in req["transactions"]]
 
-    def flood_email(self, email: str) -> bool:
-        """Flood an email address, you need premium+ or 10k points
+    # def flood_email(self, email: str) -> bool:
+    #     """Flood an email address, you need premium+ or 10k points
         
-        Args:
-            email (str): The email to flood
+    #     Args:
+    #         email (str): The email to flood
         
-        Returns:
-            bool: True if it was successful
+    #     Returns:
+    #         bool: True if it was successful
         
-        Raises:
-            errors.NoPremiumPlus: You need premium+ or 10k points
-            errors.UnknownError: The error was not recognized, the response is printed out with the error
-        """
-        data = self.data
-        data["action"] = "flood_email"
-        data["email_to_flood"] = email
-        del data["value"]
-        req = requests.post(self.api_url, data=data, headers=self.headers)
-        req = self.__handle_req__(req)
-        if "error" in req:
-            if req["error"] == "email_flood.youNeedPremiumPlus":
-                raise errors.NoPremiumPlus("You need premium plus or 10k points.")
-            else:
-                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
-        else:
-            return True
+    #     Raises:
+    #         errors.NoPremiumPlus: You need premium+ or 10k points
+    #         errors.UnknownError: The error was not recognized, the response is printed out with the error
+    #     """
+    #     data = self.data
+    #     data["action"] = "flood_email"
+    #     data["email_to_flood"] = email
+    #     del data["value"]
+    #     req = requests.post(self.api_url, data=data, headers=self.headers)
+    #     req = self.__handle_req__(req)
+    #     if "error" in req:
+    #         if req["error"] == "email_flood.youNeedPremiumPlus":
+    #             raise errors.NoPremiumPlus("You need premium plus or 10k points.")
+    #         else:
+    #             raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+    #     else:
+    #         return True
 
-    def steam_to_ip(self, search: str) -> List[SteamUser]:
-        """Search breached/leaked server databases to get an ip from a username or steam id, you need premium+ or 10k points
+    # def steam_to_ip(self, search: str) -> List[SteamUser]:
+    #     """Search breached/leaked server databases to get an ip from a username or steam id, you need premium+ or 10k points
         
-        Args:
-            search (str): A username or ip or steam id
+    #     Args:
+    #         search (str): A username or ip or steam id
         
-        Returns:
-            List[SteamUser]: A list with all the results
+    #     Returns:
+    #         List[SteamUser]: A list with all the results
         
-        Raises:
-            errors.EmptySearch: Your search is empty
-            errors.NoPremiumPlus: You need premium+ or 10k points
-            errors.UnknownError: The error was not recognized, the response is printed out with the error
-        """
-        if not search:
-            raise errors.EmptySearch("The search is empty.")
-        data = self.data
-        data["action"] = "steam_to_ip"
-        data["value"] = search
-        req = requests.post(self.api_url, data=data, headers=self.headers)
-        req = self.__handle_req__(req)
-        if "error" in req:
-            if req["error"] == "steamToIp.premiumPlusRequired":
-                raise errors.NoPremiumPlus("You need premium plus or 10k points")
-            else:
-                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
-        else:
-            return [SteamUser(user) for user in req["output"]]
+    #     Raises:
+    #         errors.EmptySearch: Your search is empty
+    #         errors.NoPremiumPlus: You need premium+ or 10k points
+    #         errors.UnknownError: The error was not recognized, the response is printed out with the error
+    #     """
+    #     if not search:
+    #         raise errors.EmptySearch("The search is empty.")
+    #     data = self.data
+    #     data["action"] = "steam_to_ip"
+    #     data["value"] = search
+    #     req = requests.post(self.api_url, data=data, headers=self.headers)
+    #     req = self.__handle_req__(req)
+    #     if "error" in req:
+    #         if req["error"] == "steamToIp.premiumPlusRequired":
+    #             raise errors.NoPremiumPlus("You need premium plus or 10k points")
+    #         else:
+    #             raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+    #     else:
+    #         return [SteamUser(user) for user in req["output"]]
 
-    def create_ip_logger(self, redirect_url="") -> str:
-        """Create a new ip logger url, you need premium+ or 10k points
+    # def create_ip_logger(self, redirect_url="") -> str:
+    #     """Create a new ip logger url, you need premium+ or 10k points
         
-        Args:
-            redirect_url (str, optional): The redirect url
+    #     Args:
+    #         redirect_url (str, optional): The redirect url
         
-        Returns:
-            str: The ip logger url
+    #     Returns:
+    #         str: The ip logger url
         
-        Raises:
-            errors.NoPremiumPlus: You need premium or 10k points
-            errors.UnknownError: The error was not recognized, the response is printed out with the error
-        """
-        data = self.data
-        data["action"] = "ip_logger"
-        data["value"] = "3"  # generate new link
-        req = requests.post(self.api_url, data=data, headers=self.headers)
-        req = self.__handle_req__(req)
-        if "error" in req:
-            if req["error"] == "ipLogger.premiumPlusIsRequired":
-                raise errors.NoPremiumPlus("You need premium plus or 10k points")
-            else:
-                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
-        else:
-            url = req["output"]
-            if redirect_url:
-                data["value"] = "5"  # set redirect url
-                data["url"] = redirect_url
-                req = requests.post(self.api_url, data=data, headers=self.headers)
-                req = self.__handle_req__(req)
-                if "error" in req:
-                    raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+    #     Raises:
+    #         errors.NoPremiumPlus: You need premium or 10k points
+    #         errors.UnknownError: The error was not recognized, the response is printed out with the error
+    #     """
+    #     data = self.data
+    #     data["action"] = "ip_logger"
+    #     data["value"] = "3"  # generate new link
+    #     req = requests.post(self.api_url, data=data, headers=self.headers)
+    #     req = self.__handle_req__(req)
+    #     if "error" in req:
+    #         if req["error"] == "ipLogger.premiumPlusIsRequired":
+    #             raise errors.NoPremiumPlus("You need premium plus or 10k points")
+    #         else:
+    #             raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+    #     else:
+    #         url = req["output"]
+    #         if redirect_url:
+    #             data["value"] = "5"  # set redirect url
+    #             data["url"] = redirect_url
+    #             req = requests.post(self.api_url, data=data, headers=self.headers)
+    #             req = self.__handle_req__(req)
+    #             if "error" in req:
+    #                 raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
 
-            return url
+    #         return url
 
-    def ip_logger_url(self) -> str:
-        """Get the current ip logger url
+    # def ip_logger_url(self) -> str:
+    #     """Get the current ip logger url
         
-        Returns:
-            str: The corrent ip logger url
+    #     Returns:
+    #         str: The corrent ip logger url
         
-        Raises:
-            errors.NoPremiumPlus: You need premium or 10k points
-            errors.UnknownError: The error was not recognized, the response is printed out with the error
-        """
-        data = self.data
-        data["action"] = "ip_logger"
-        data["value"] = "1"  # get ip logger url
-        req = requests.post(self.api_url, data=data, headers=self.headers)
-        req = self.__handle_req__(req)
-        if "error" in req:
-            if req["error"] == "ipLogger.premiumPlusIsRequired":
-                raise errors.NoPremiumPlus("You need premium plus or 10k points")
-            else:
-                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
-        else:
-            return req["output"]
+    #     Raises:
+    #         errors.NoPremiumPlus: You need premium or 10k points
+    #         errors.UnknownError: The error was not recognized, the response is printed out with the error
+    #     """
+    #     data = self.data
+    #     data["action"] = "ip_logger"
+    #     data["value"] = "1"  # get ip logger url
+    #     req = requests.post(self.api_url, data=data, headers=self.headers)
+    #     req = self.__handle_req__(req)
+    #     if "error" in req:
+    #         if req["error"] == "ipLogger.premiumPlusIsRequired":
+    #             raise errors.NoPremiumPlus("You need premium plus or 10k points")
+    #         else:
+    #             raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+    #     else:
+    #         return req["output"]
 
-    def set_ip_logger_redirect(self, redirect_url: str) -> bool:
-        """Set the redirect for the ip logger
+    # def set_ip_logger_redirect(self, redirect_url: str) -> bool:
+    #     """Set the redirect for the ip logger
         
-        Args:
-            redirect_url (str): The redirect url to redirect to
+    #     Args:
+    #         redirect_url (str): The redirect url to redirect to
         
-        Returns:
-            bool: True if successful
+    #     Returns:
+    #         bool: True if successful
         
-        Raises:
-            errors.NoPremiumPlus: You need premium or 10k points
-            errors.UnknownError: The error was not recognized, the response is printed out with the error
-        """
-        data = self.data
-        data["value"] = "5"  # set redirect url
-        data["url"] = redirect_url
-        req = requests.post(self.api_url, data=data, headers=self.headers)
-        req = self.__handle_req__(req)
-        if "error" in req:
-            if req["error"] == "ipLogger.premiumPlusIsRequired":
-                raise errors.NoPremiumPlus("You need premium plus or 10k points")
-            else:
-                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
-        else:
-            return True
+    #     Raises:
+    #         errors.NoPremiumPlus: You need premium or 10k points
+    #         errors.UnknownError: The error was not recognized, the response is printed out with the error
+    #     """
+    #     data = self.data
+    #     data["value"] = "5"  # set redirect url
+    #     data["url"] = redirect_url
+    #     req = requests.post(self.api_url, data=data, headers=self.headers)
+    #     req = self.__handle_req__(req)
+    #     if "error" in req:
+    #         if req["error"] == "ipLogger.premiumPlusIsRequired":
+    #             raise errors.NoPremiumPlus("You need premium plus or 10k points")
+    #         else:
+    #             raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+    #     else:
+    #         return True
 
-    def delete_ip_logs(self) -> bool:
-        """Delete the logged ips
+    # def delete_ip_logs(self) -> bool:
+    #     """Delete the logged ips
         
-        Returns:
-            bool: True if successful
+    #     Returns:
+    #         bool: True if successful
         
-        Raises:
-            errors.NoPremiumPlus: You need premium or 10k points
-            errors.UnknownError: The error was not recognized, the response is printed out with the error
-        """
-        data = self.data
-        data["value"] = "2"  # delete logged ips
-        req = requests.post(self.api_url, data=data, headers=self.headers)
-        req = self.__handle_req__(req)
-        if "error" in req:
-            if req["error"] == "ipLogger.premiumPlusIsRequired":
-                raise errors.NoPremiumPlus("You need premium plus or 10k points")
-            else:
-                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
-        else:
-            return True
+    #     Raises:
+    #         errors.NoPremiumPlus: You need premium or 10k points
+    #         errors.UnknownError: The error was not recognized, the response is printed out with the error
+    #     """
+    #     data = self.data
+    #     data["value"] = "2"  # delete logged ips
+    #     req = requests.post(self.api_url, data=data, headers=self.headers)
+    #     req = self.__handle_req__(req)
+    #     if "error" in req:
+    #         if req["error"] == "ipLogger.premiumPlusIsRequired":
+    #             raise errors.NoPremiumPlus("You need premium plus or 10k points")
+    #         else:
+    #             raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+    #     else:
+    #         return True
 
-    def get_ip_logs(self) -> List[LoggedIp]:
-        """Get all logged ips in a list
+    # def get_ip_logs(self) -> List[LoggedIp]:
+    #     """Get all logged ips in a list
         
-        Returns:
-            List[LoggedIp]: A list with all the logged ips
+    #     Returns:
+    #         List[LoggedIp]: A list with all the logged ips
         
-        Raises:
-            errors.NoPremiumPlus: You need premium or 10k points
-            errors.UnknownError: The error was not recognized, the response is printed out with the error
-        """
-        data = self.data
-        data["value"] = "4"  # get logged ips
-        req = requests.post(self.api_url, data=data, headers=self.headers)
-        req = self.__handle_req__(req)
-        if "error" in req:
-            if req["error"] == "ipLogger.premiumPlusIsRequired":
-                raise errors.NoPremiumPlus("You need premium plus or 10k points")
-            else:
-                raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
-        else:
-            return [LoggedIp(ip) for ip in req["output"]]
+    #     Raises:
+    #         errors.NoPremiumPlus: You need premium or 10k points
+    #         errors.UnknownError: The error was not recognized, the response is printed out with the error
+    #     """
+    #     data = self.data
+    #     data["value"] = "4"  # get logged ips
+    #     req = requests.post(self.api_url, data=data, headers=self.headers)
+    #     req = self.__handle_req__(req)
+    #     if "error" in req:
+    #         if req["error"] == "ipLogger.premiumPlusIsRequired":
+    #             raise errors.NoPremiumPlus("You need premium plus or 10k points")
+    #         else:
+    #             raise errors.UnknownError("API responded with an unrecognized error: " + req["error"])
+    #     else:
+    #         return [LoggedIp(ip) for ip in req["output"]]
