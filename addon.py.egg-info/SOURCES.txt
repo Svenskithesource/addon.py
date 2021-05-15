@@ -1,5 +1,8 @@
 README.md
 setup.py
+addon/__init__.py
+addon/addon.py
+addon/errors.py
 addon.py.egg-info/PKG-INFO
 addon.py.egg-info/SOURCES.txt
 addon.py.egg-info/dependency_links.txt

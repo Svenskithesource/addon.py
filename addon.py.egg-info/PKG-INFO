@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: addon.py
-Version: 0.0.1
+Version: 0.0.4
 Summary: An API Wrapper for addon.to's API
 Home-page: https://github.com/svenskithesource/addon.py
 Author: svenskithesource, shizo
